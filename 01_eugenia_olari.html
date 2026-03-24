@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Eugenia Olari">
+<meta name="dcterms.date" content="2026-03-24">
+
+<title>data.table project</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="task1_precipitation_files/libs/clipboard/clipboard.min.js"></script>
+<script src="task1_precipitation_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="task1_precipitation_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="task1_precipitation_files/libs/quarto-html/popper.min.js"></script>
+<script src="task1_precipitation_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="task1_precipitation_files/libs/quarto-html/anchor.min.js"></script>
+<link href="task1_precipitation_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="task1_precipitation_files/libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="task1_precipitation_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="task1_precipitation_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="task1_precipitation_files/libs/bootstrap/bootstrap-bb462d781dde1847d9e3ccf7736099dd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">data.table project</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Eugenia Olari </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">March 24, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="load-data-adn-convert-to-data.table" class="level2">
+<h2 class="anchored" data-anchor-id="load-data-adn-convert-to-data.table">1. Load data adn convert to data.table</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## load data</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>dta <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">"data/prec_data.rds"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="do">## load package</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: пакет 'data.table' был собран под R версии 4.5.2</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">## convert to data.table</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>dta_t <span class="ot">&lt;-</span> <span class="fu">as.data.table</span>(<span class="at">x =</span> dta)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(dta_t))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           STATION ELEMENT                  DT VALUE   FLAG QUALITY      X
+            &lt;fctr&gt;  &lt;fctr&gt;              &lt;POSc&gt; &lt;num&gt; &lt;char&gt;   &lt;num&gt; &lt;lgcl&gt;
+1: 0-20000-0-11406   SRA1H 2018-01-01 00:00:00     0   &lt;NA&gt;       0     NA
+2: 0-20000-0-11406   SRA1H 2018-01-01 01:00:00     0   &lt;NA&gt;       0     NA
+3: 0-20000-0-11406   SRA1H 2018-01-01 02:00:00     0   &lt;NA&gt;       0     NA
+4: 0-20000-0-11406   SRA1H 2018-01-01 03:00:00     0   &lt;NA&gt;       0     NA
+5: 0-20000-0-11406   SRA1H 2018-01-01 04:00:00     0   &lt;NA&gt;       0     NA
+6: 0-20000-0-11406   SRA1H 2018-01-01 05:00:00     0   &lt;NA&gt;       0     NA</code></pre>
+</div>
+</div>
+</section>
+<section id="basic-inspection" class="level2">
+<h2 class="anchored" data-anchor-id="basic-inspection">2. Basic inspection</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="do">## check classes</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(<span class="at">x =</span> dta)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "data.frame"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(<span class="at">x =</span> dta_t)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "data.table" "data.frame"</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="do">## show first rows</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="at">x =</span> dta_t)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           STATION ELEMENT                  DT VALUE   FLAG QUALITY      X
+            &lt;fctr&gt;  &lt;fctr&gt;              &lt;POSc&gt; &lt;num&gt; &lt;char&gt;   &lt;num&gt; &lt;lgcl&gt;
+1: 0-20000-0-11406   SRA1H 2018-01-01 00:00:00     0   &lt;NA&gt;       0     NA
+2: 0-20000-0-11406   SRA1H 2018-01-01 01:00:00     0   &lt;NA&gt;       0     NA
+3: 0-20000-0-11406   SRA1H 2018-01-01 02:00:00     0   &lt;NA&gt;       0     NA
+4: 0-20000-0-11406   SRA1H 2018-01-01 03:00:00     0   &lt;NA&gt;       0     NA
+5: 0-20000-0-11406   SRA1H 2018-01-01 04:00:00     0   &lt;NA&gt;       0     NA
+6: 0-20000-0-11406   SRA1H 2018-01-01 05:00:00     0   &lt;NA&gt;       0     NA</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="do">## object sizes</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">object.size</span>(<span class="at">x =</span> dta)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1132077608 bytes</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">object.size</span>(<span class="at">x =</span> dta_t)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1132078424 bytes</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="do">## column names</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(<span class="at">x =</span> dta_t)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "STATION" "ELEMENT" "DT"      "VALUE"   "FLAG"    "QUALITY" "X"      </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="do">## dimensions - number of rows and columns</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(<span class="at">x =</span> dta_t)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 25728181</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ncol</span>(<span class="at">x =</span> dta_t)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 7</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="do">## column types</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(<span class="at">object =</span> dta_t)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Classes 'data.table' and 'data.frame':  25728181 obs. of  7 variables:
+ $ STATION: Factor w/ 431 levels "0-20000-0-11406",..: 1 1 1 1 1 1 1 1 1 1 ...
+ $ ELEMENT: Factor w/ 1 level "SRA1H": 1 1 1 1 1 1 1 1 1 1 ...
+ $ DT     : POSIXct, format: "2018-01-01 00:00:00" "2018-01-01 01:00:00" ...
+ $ VALUE  : num  0 0 0 0 0 0 0 0 0.1 0.2 ...
+ $ FLAG   : chr  NA NA NA NA ...
+ $ QUALITY: num  0 0 0 0 0 0 0 0 0 0 ...
+ $ X      : logi  NA NA NA NA NA NA ...
+ - attr(*, ".internal.selfref")=&lt;externalptr&gt; </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="do">## check for missing datetimes</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(<span class="at">x =</span> dta_t<span class="sc">$</span>DT))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="do">## check QUALITY values</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(dta_t<span class="sc">$</span>QUALITY, <span class="at">useNA =</span> <span class="st">"always"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+       0        3        4     &lt;NA&gt; 
+25562934   128245    37002        0 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="do">## check FLAG values</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(dta_t<span class="sc">$</span>FLAG, <span class="at">useNA =</span> <span class="st">"always"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+                Z     &lt;NA&gt; 
+  136458    56382 25535341 </code></pre>
+</div>
+</div>
+<p>Based on the inspection above:</p>
+<ul>
+<li><p><strong>Identifier variables</strong>: <code>STATION</code>, <code>DT</code> (datetime), <code>ELEMENT</code> — these uniquely identify each measurement. <code>STATION</code> has 431 levels, <code>ELEMENT</code> has only one level (<code>SRA1H</code>).</p></li>
+<li><p><strong>Categorical variables</strong>: <code>STATION</code> and <code>ELEMENT</code> are factors. <code>FLAG</code> is character, <code>QUALITY</code> is numeric.</p></li>
+<li><p><strong>Variables needing cleaning</strong>: <code>X</code> is entirely <code>NA</code> and will be dropped. <code>FLAG</code> has 136,458 empty strings and 56,382 <code>"Z"</code> codes worth checking. <code>QUALITY</code> has 128,245 rows with code <code>3</code> and 37,002 with code <code>4</code>, indicating lower quality measurements.</p></li>
+</ul>
+</section>
+<section id="filtering-and-summaries" class="level2">
+<h2 class="anchored" data-anchor-id="filtering-and-summaries">3. Filtering and summaries</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="do">## filter VALUE &gt; 0</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>nz <span class="ot">&lt;-</span> dta_t[VALUE <span class="sc">&gt;</span> <span class="dv">0</span>, .(STATION, DT, VALUE, ELEMENT, FLAG, QUALITY)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="do">## summary by station</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>nz[, .(<span class="at">mean =</span> <span class="fu">mean</span>(<span class="at">x =</span> VALUE),</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">sd   =</span> <span class="fu">sd</span>(<span class="at">x =</span> VALUE),</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">iqr  =</span> <span class="fu">IQR</span>(<span class="at">x =</span> VALUE),</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">min  =</span> <span class="fu">min</span>(<span class="at">x =</span> VALUE),</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">max  =</span> <span class="fu">max</span>(<span class="at">x =</span> VALUE)),</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>   by <span class="ot">=</span> STATION][<span class="fu">order</span>(<span class="sc">-</span>mean)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 STATION      mean       sd   iqr   min   max
+                  &lt;fctr&gt;     &lt;num&gt;    &lt;num&gt; &lt;num&gt; &lt;num&gt; &lt;num&gt;
+  1:     0-20000-0-11787 1.0382483 1.791235   1.0   0.1  32.5
+  2: 0-203-0-10801028001 0.9934436 1.477013   1.0   0.1  50.3
+  3:       0-203-0-11749 0.9783028 2.188297   0.8   0.1  59.3
+  4:       0-203-0-11785 0.9588887 1.870139   0.9   0.1  33.4
+  5: 0-203-0-10201001001 0.9563969 1.777474   0.9   0.1  51.5
+ ---                                                         
+427: 0-203-0-11001016001 0.6135234 1.196371   0.6   0.1  43.0
+428: 0-203-0-11502020001 0.6132547 1.147207   0.6   0.1  29.1
+429:       0-203-0-11447 0.6096197 1.145601   0.5   0.1  21.0
+430:       0-203-0-11401 0.6043869 1.196528   0.5   0.1  38.2
+431:     0-20000-0-11464 0.5632224 1.065839   0.5   0.1  19.7</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="do">## summary by station and year of DT</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>nz[, .(<span class="at">mean =</span> <span class="fu">mean</span>(<span class="at">x =</span> VALUE),</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">sd   =</span> <span class="fu">sd</span>(<span class="at">x =</span> VALUE),</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">iqr  =</span> <span class="fu">IQR</span>(<span class="at">x =</span> VALUE),</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">min  =</span> <span class="fu">min</span>(<span class="at">x =</span> VALUE),</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">max  =</span> <span class="fu">max</span>(<span class="at">x =</span> VALUE)),</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>   by <span class="ot">=</span> .(STATION, <span class="fu">year</span>(<span class="at">x =</span> DT))][<span class="fu">order</span>(<span class="sc">-</span>mean)] <span class="co"># do the grouped summary</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                  STATION  year      mean        sd   iqr   min   max
+                   &lt;fctr&gt; &lt;int&gt;     &lt;num&gt;     &lt;num&gt; &lt;num&gt; &lt;num&gt; &lt;num&gt;
+   1:     0-20000-0-11787  2020 1.3339636 1.8354339   1.5   0.1  15.7
+   2:       0-203-0-11749  2019 1.2781190 3.6670756   1.0   0.1  59.3
+   3: 0-203-0-41202062001  2019 1.2696309 3.4933840   1.0   0.1  37.7
+   4:       0-203-0-11640  2024 1.2554878 1.8584291   1.3   0.1  21.0
+   5:       0-203-0-11721  2024 1.2514451 3.5011903   1.1   0.1  64.0
+  ---                                                                
+2947: 0-203-0-10601208001  2022 0.4442708 0.6082922   0.4   0.1   3.2
+2948:     0-20000-0-11464  2019 0.4367067 0.7766711   0.3   0.1   9.0
+2949: 0-203-0-20201031001  2022 0.3759777 0.4516307   0.3   0.1   3.0
+2950: 0-203-0-10103004001  2018 0.3732143 0.4599221   0.4   0.1   2.7
+2951: 0-203-0-11301082001  2018 0.3000000        NA   0.0   0.3   0.3</code></pre>
+</div>
+</div>
+<p>The station-level summary covers 431 stations with non-zero precipitation records. The highest mean is at station <code>0-20000-0-11787</code> (1.04 mm/hr), the lowest at <code>0-20000-0-11464</code> (0.56 mm/hr). The maximum single-hour value of <strong>64.0 mm</strong> at station <code>0-203-0-11721</code> is a clear outlier.</p>
+<p>When grouped by year, station <code>0-20000-0-11787</code> in <strong>2020</strong> has the highest mean (1.33mm/hr). Station <code>0-203-0-11721</code> in 2024 has the largest standard deviation (3.50), driven by the 64.0 mm extreme value.</p>
+</section>
+<section id="duplicate-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="duplicate-analysis">4. Duplicate analysis</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="do">## count exact duplicate rows</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">duplicated</span>(<span class="at">x =</span> dta_t))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2846</code></pre>
+</div>
+</div>
+<p>The dataset contains <strong>2846 exact duplicate rows</strong>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="do">## show examples of exact duplicates</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>dta_t[<span class="fu">duplicated</span>(<span class="at">x =</span> dta_t) <span class="sc">|</span> <span class="fu">duplicated</span>(<span class="at">x =</span> dta_t, <span class="at">fromLast =</span> <span class="cn">TRUE</span>)][<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            STATION ELEMENT                  DT VALUE   FLAG QUALITY      X
+             &lt;fctr&gt;  &lt;fctr&gt;              &lt;POSc&gt; &lt;num&gt; &lt;char&gt;   &lt;num&gt; &lt;lgcl&gt;
+ 1: 0-20000-0-11406   SRA1H 2018-03-25 01:00:00     0   &lt;NA&gt;       0     NA
+ 2: 0-20000-0-11406   SRA1H 2018-03-25 01:00:00     0   &lt;NA&gt;       0     NA
+ 3: 0-20000-0-11414   SRA1H 2018-03-25 01:00:00     0   &lt;NA&gt;       0     NA
+ 4: 0-20000-0-11414   SRA1H 2018-03-25 01:00:00     0   &lt;NA&gt;       0     NA
+ 5: 0-20000-0-11423   SRA1H 2018-03-25 01:00:00     0   &lt;NA&gt;       0     NA
+ 6: 0-20000-0-11423   SRA1H 2018-03-25 01:00:00     0   &lt;NA&gt;       0     NA
+ 7: 0-20000-0-11433   SRA1H 2018-03-25 01:00:00     0   &lt;NA&gt;       0     NA
+ 8: 0-20000-0-11433   SRA1H 2018-03-25 01:00:00     0   &lt;NA&gt;       0     NA
+ 9: 0-20000-0-11438   SRA1H 2018-03-25 01:00:00     0   &lt;NA&gt;       0     NA
+10: 0-20000-0-11438   SRA1H 2018-03-25 01:00:00     0   &lt;NA&gt;       0     NA</code></pre>
+</div>
+</div>
+<p>All duplicates share the timestamp <code>2018-03-25 01:00:00</code> — a daylight saving time clock change date, where 01:00 occurs twice. Since both rows in each pair have identical values, removing one copy with <code>unique()</code> is safe.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="do">## define logical duplicate: same station, dt, and element</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="do">## count logical duplicates using data.table</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>dt_dup <span class="ot">&lt;-</span> dta_t[, .(<span class="at">n =</span> .N),</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>                by <span class="ot">=</span> .(STATION, DT, ELEMENT)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="do">## how many key combinations appear more than once</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>dt_dup[n <span class="sc">&gt;</span> <span class="dv">1</span>, .N]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2922</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="do">## show examples</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>dt_dup[n <span class="sc">&gt;</span> <span class="dv">1</span>][<span class="fu">order</span>(<span class="sc">-</span>n)][<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            STATION                  DT ELEMENT     n
+             &lt;fctr&gt;              &lt;POSc&gt;  &lt;fctr&gt; &lt;int&gt;
+ 1: 0-20000-0-11406 2018-03-25 01:00:00   SRA1H     2
+ 2: 0-20000-0-11414 2018-03-25 01:00:00   SRA1H     2
+ 3: 0-20000-0-11423 2018-03-25 01:00:00   SRA1H     2
+ 4: 0-20000-0-11433 2018-03-25 01:00:00   SRA1H     2
+ 5: 0-20000-0-11438 2018-03-25 01:00:00   SRA1H     2
+ 6: 0-20000-0-11450 2018-03-25 01:00:00   SRA1H     2
+ 7: 0-20000-0-11457 2018-03-25 01:00:00   SRA1H     2
+ 8: 0-20000-0-11464 2018-03-25 01:00:00   SRA1H     2
+ 9: 0-20000-0-11487 2018-03-25 01:00:00   SRA1H     2
+10: 0-20000-0-11502 2018-03-25 01:00:00   SRA1H     2</code></pre>
+</div>
+</div>
+<p>There are <strong>2922 logical duplicates</strong> — <code>STATION</code>, <code>DT</code>, <code>ELEMENT</code> combinations appearing more than once. All have <code>n = 2</code> and all share the same DST timestamp.</p>
+</section>
+<section id="cleaning-using" class="level2">
+<h2 class="anchored" data-anchor-id="cleaning-using">5. Cleaning using :=</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="do">## drop stray X column</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>dta_t[, X <span class="sc">:</span><span class="er">=</span> <span class="cn">NULL</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The X column contained only NA values across all 25.7 million rows and carries no information</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="do">## drop rows where DT is NA</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>dta_t <span class="ot">&lt;-</span> dta_t[<span class="sc">!</span><span class="fu">is.na</span>(<span class="at">x =</span> DT)]</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(<span class="at">x =</span> dta_t<span class="sc">$</span>DT))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+</div>
+<p>No <code>NA</code> values exist in <code>DT</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="do">## flag suspicious values: negative precipitation is physically impossible</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>dta_t[, suspicious <span class="sc">:</span><span class="er">=</span> VALUE <span class="sc">&lt;</span> <span class="dv">0</span>]</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>dta_t[suspicious <span class="sc">==</span> <span class="cn">TRUE</span>, .N]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+</div>
+<p>No negative <code>VALUE</code> entries found</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="do">## flag low quality rows</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>dta_t[, low_quality <span class="sc">:</span><span class="er">=</span> QUALITY <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">4</span>)]</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>dta_t[low_quality <span class="sc">==</span> <span class="cn">TRUE</span>, .N]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 165247</code></pre>
+</div>
+</div>
+<p><strong>165247 rows</strong> have <code>QUALITY</code> code <code>3</code> or <code>4</code> and are flagged as <code>low_quality</code>. These rows are kept but we will kepp them in mind for cautious use.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="do">## remove exact duplicates</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>dta_t <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="at">x =</span> dta_t)</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(<span class="at">x =</span> dta_t)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 25725335</code></pre>
+</div>
+</div>
+<p>After deduplication the dataset contains <strong>25725335 rows</strong>, down from 25728181 - a reduction of 2846 duplicate rows.</p>
+<hr>
+</section>
+<section id="renaming-and-column-work" class="level2">
+<h2 class="anchored" data-anchor-id="renaming-and-column-work">6. Renaming and column work</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="do">## rename DT to DATETIME for clarity</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">setnames</span>(<span class="at">x =</span> dta_t,</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">old =</span> <span class="fu">c</span>(<span class="st">"DT"</span>),</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">new =</span> <span class="fu">c</span>(<span class="st">"DATETIME"</span>),</span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">skip_absent =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a><span class="do">## create year column — useful for temporal grouping</span></span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>dta_t[, yr <span class="sc">:</span><span class="er">=</span> <span class="fu">year</span>(<span class="at">x =</span> DATETIME)]</span>
+<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a><span class="do">## create row id within each station</span></span>
+<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a>dta_t[, row_id <span class="sc">:</span><span class="er">=</span> <span class="dv">1</span><span class="sc">:</span>.N,</span>
+<span id="cb52-12"><a href="#cb52-12" aria-hidden="true" tabindex="-1"></a>      by <span class="ot">=</span> STATION]</span>
+<span id="cb52-13"><a href="#cb52-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-14"><a href="#cb52-14" aria-hidden="true" tabindex="-1"></a><span class="do">## remove row_id helper column after inspection</span></span>
+<span id="cb52-15"><a href="#cb52-15" aria-hidden="true" tabindex="-1"></a>dta_t[, row_id <span class="sc">:</span><span class="er">=</span> <span class="cn">NULL</span>]</span>
+<span id="cb52-16"><a href="#cb52-16" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(<span class="at">x =</span> dta_t)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "STATION"     "ELEMENT"     "DATETIME"    "VALUE"       "FLAG"       
+[6] "QUALITY"     "suspicious"  "low_quality" "yr"         </code></pre>
+</div>
+</div>
+<p><code>DT</code> is renamed to <code>DATETIME</code> for clarity using <code>setnames()</code>. A <code>yr</code> column is added for fast year-level grouping. A <code>row_id</code> helper column is created within each station and immediately removed, it was used only to verify row ordering.</p>
+</section>
+<section id="station-summary" class="level2">
+<h2 class="anchored" data-anchor-id="station-summary">7.Station summary</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="do">## station summary</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>st_sum <span class="ot">&lt;-</span> dta_t[, .(</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_rows =</span> .N,</span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">mean_val =</span> <span class="fu">mean</span>(<span class="at">x =</span> VALUE, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">sd_val =</span> <span class="fu">sd</span>(<span class="at">x =</span> VALUE, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">min_val =</span> <span class="fu">min</span>(<span class="at">x =</span> VALUE, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">max_val =</span> <span class="fu">max</span>(<span class="at">x =</span> VALUE, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_nonzero =</span> <span class="fu">sum</span>(VALUE <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb54-9"><a href="#cb54-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_suspicious =</span> <span class="fu">sum</span>(suspicious <span class="sc">==</span> <span class="cn">TRUE</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb54-10"><a href="#cb54-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_flagged =</span> <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(<span class="at">x =</span> FLAG) <span class="sc">&amp;</span> FLAG <span class="sc">!=</span> <span class="st">""</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb54-11"><a href="#cb54-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_low_qual =</span> <span class="fu">sum</span>(low_quality <span class="sc">==</span> <span class="cn">TRUE</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb54-12"><a href="#cb54-12" aria-hidden="true" tabindex="-1"></a>), by <span class="ot">=</span> STATION]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Q1: most problematic (most flagged + low quality)</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>st_sum[<span class="fu">order</span>(<span class="sc">-</span>n_flagged)][<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           STATION n_rows   mean_val    sd_val min_val max_val n_nonzero
+            &lt;fctr&gt;  &lt;int&gt;      &lt;num&gt;     &lt;num&gt;   &lt;num&gt;   &lt;num&gt;     &lt;int&gt;
+1: 0-20000-0-11747  61361 0.06409446 0.5615719       0    29.7      4345
+2: 0-20000-0-11624  61361 0.06098825 0.4611779       0    28.6      4739
+3: 0-20000-0-11567  61361 0.05876208 0.5102130       0    51.7      4505
+4: 0-20000-0-11669  61361 0.10135917 0.6257315       0    39.2      6808
+5: 0-20000-0-11652  61361 0.06543570 0.4383644       0    25.8      5239
+   n_suspicious n_flagged n_low_qual
+          &lt;int&gt;     &lt;int&gt;      &lt;int&gt;
+1:            0     16741        491
+2:            0      9529        367
+3:            0      6549        637
+4:            0      5168       2235
+5:            0      2930        380</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Q2: highest non-zero precipitation</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>st_sum[<span class="fu">order</span>(<span class="sc">-</span>mean_val)][<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>               STATION n_rows  mean_val    sd_val min_val max_val n_nonzero
+                &lt;fctr&gt;  &lt;int&gt;     &lt;num&gt;     &lt;num&gt;   &lt;num&gt;   &lt;num&gt;     &lt;int&gt;
+1:       0-203-0-11640  61361 0.1950539 0.7808865       0    47.9     12837
+2: 0-203-0-10501021001  61361 0.1806604 0.7108757       0    37.5     12142
+3: 0-203-0-20410001101  61361 0.1690162 0.7072623       0    25.4     11157
+4: 0-203-0-10801028001  61362 0.1684072 0.7132537       0    50.3     10402
+5: 0-203-0-40201003001  39477 0.1665451 0.7358133       0    34.6      7017
+   n_suspicious n_flagged n_low_qual
+          &lt;int&gt;     &lt;int&gt;      &lt;int&gt;
+1:            0         0       2307
+2:            0         0       1759
+3:            0         0        712
+4:            0         0        179
+5:            0         0          3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Q3: most records</span></span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>st_sum[<span class="fu">order</span>(<span class="sc">-</span>n_rows)][<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>               STATION n_rows   mean_val    sd_val min_val max_val n_nonzero
+                &lt;fctr&gt;  &lt;int&gt;      &lt;num&gt;     &lt;num&gt;   &lt;num&gt;   &lt;num&gt;     &lt;int&gt;
+1: 0-203-0-10102013001  61363 0.11134723 0.6134854       0    49.5      7689
+2: 0-203-0-10601064001  61363 0.12229193 0.7242553       0    75.1      9761
+3: 0-203-0-10602029002  61363 0.10790704 0.6890153       0    67.6      7578
+4: 0-203-0-10602036001  61363 0.08706387 0.6120948       0    36.0      7020
+5: 0-203-0-11302082001  61363 0.07372847 0.5145014       0    66.3      6632
+   n_suspicious n_flagged n_low_qual
+          &lt;int&gt;     &lt;int&gt;      &lt;int&gt;
+1:            0         0        163
+2:            0         0        335
+3:            0         0        256
+4:            0         0         66
+5:            0         0        164</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Q4: most suspicious rows</span></span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>st_sum[<span class="fu">order</span>(<span class="sc">-</span>n_suspicious)][<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           STATION n_rows   mean_val    sd_val min_val max_val n_nonzero
+            &lt;fctr&gt;  &lt;int&gt;      &lt;num&gt;     &lt;num&gt;   &lt;num&gt;   &lt;num&gt;     &lt;int&gt;
+1: 0-20000-0-11406  61361 0.06734245 0.4665130       0    58.2      6589
+2: 0-20000-0-11414  61361 0.06890370 0.5445306       0    54.6      6020
+3: 0-20000-0-11423  61361 0.08736820 0.4753805       0    27.3      8302
+4: 0-20000-0-11433  61361 0.05468783 0.3972796       0    28.1      5218
+5: 0-20000-0-11438  61361 0.05206890 0.3957516       0    19.6      5034
+   n_suspicious n_flagged n_low_qual
+          &lt;int&gt;     &lt;int&gt;      &lt;int&gt;
+1:            0        12        248
+2:            0        55        344
+3:            0      1328        225
+4:            0         0        182
+5:            0         0        389</code></pre>
+</div>
+</div>
+<section id="answers-for-the-questions" class="level3">
+<h3 class="anchored" data-anchor-id="answers-for-the-questions">Answers for the questions:</h3>
+<p><strong>Q1 — Which stations seem most problematic?</strong> Station <code>0-20000-0-11747</code> has the most flagged rows (16741), followed by <code>0-20000-0-11624</code> (9529) and <code>0-20000-0-11567</code> (6549). These stations also have elevated <code>n_low_qual</code> counts, making them the least reliable for analysis.</p>
+<p><strong>Q2 — Which stations have the highest non-zero precipitation?</strong> Station <code>0-203-0-11640</code> has the highest mean value (0.195 mm/hr), followed by <code>0-203-0-10501021001</code> (0.181) and <code>0-203-0-20410001101</code> (0.169).</p>
+<p><strong>Q3 — Which stations have the most records?</strong> Stations <code>0-203-0-10102013001</code>, <code>0-203-0-10601064001</code>, and <code>0-203-0-10602029002</code> all have 61361 rows — the maximum in the dataset, indicating complete coverage across the full study period.</p>
+<p><strong>Q4 — Which stations have the most suspicious rows?</strong> No stations have any suspicious rows — <code>n_suspicious = 0</code> across all 431 stations, confirming there are no negative precipitation values in the dataset.</p>
+<hr>
+</section>
+</section>
+<section id="element-summary" class="level2">
+<h2 class="anchored" data-anchor-id="element-summary">8. Element summary</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="do">## element summary</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>el_sum <span class="ot">&lt;-</span> dta_t[, .(</span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_rows =</span> .N,</span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_stations =</span> <span class="fu">uniqueN</span>(<span class="at">x =</span> STATION),</span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">mean_val =</span> <span class="fu">mean</span>(<span class="at">x =</span> VALUE, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">sd_val =</span> <span class="fu">sd</span>(<span class="at">x =</span> VALUE, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb63-7"><a href="#cb63-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">prop_missing =</span> <span class="fu">mean</span>(<span class="at">x =</span> <span class="fu">is.na</span>(<span class="at">x =</span> VALUE)),</span>
+<span id="cb63-8"><a href="#cb63-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_flagged =</span> <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(<span class="at">x =</span> FLAG) <span class="sc">&amp;</span> FLAG <span class="sc">!=</span> <span class="st">""</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb63-9"><a href="#cb63-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_low_quality =</span> <span class="fu">sum</span>(low_quality  <span class="sc">==</span> <span class="cn">TRUE</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb63-10"><a href="#cb63-10" aria-hidden="true" tabindex="-1"></a>), by <span class="ot">=</span> ELEMENT]</span>
+<span id="cb63-11"><a href="#cb63-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-12"><a href="#cb63-12" aria-hidden="true" tabindex="-1"></a><span class="do">## view element summary</span></span>
+<span id="cb63-13"><a href="#cb63-13" aria-hidden="true" tabindex="-1"></a>el_sum[<span class="fu">order</span>(prop_missing)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   ELEMENT   n_rows n_stations   mean_val   sd_val prop_missing n_flagged
+    &lt;fctr&gt;    &lt;int&gt;      &lt;int&gt;      &lt;num&gt;    &lt;num&gt;        &lt;num&gt;     &lt;int&gt;
+1:   SRA1H 25725335        431 0.08051174 0.542017  0.001438193     56374
+   n_low_quality
+           &lt;int&gt;
+1:        165239</code></pre>
+</div>
+</div>
+<p>Since <code>ELEMENT</code> has only one level (<code>SRA1H</code>), the summary contains a single row. <code>SRA1H</code> covers all 431 stations and 25725335 rows. The mean value is 0.081 mm/hr across all records (including zeros), with a proportion of missing values of 0.0014 - very low. There are 192840 flagged rows and 165239 low quality rows.</p>
+<p>Since there is only one element type, a cross-element comparison is not possible. <code>el_sum</code> serves here as a data integrity check rather than a comparative analysis. All quality and reliability questions therefore fall to the station level, which was covered in the previous section.</p>
+</section>
+<section id="merge-task" class="level2">
+<h2 class="anchored" data-anchor-id="merge-task">10. Merge task</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="do">## rebuild nz from cleaned data (non-zero values only)</span></span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>nz <span class="ot">&lt;-</span> dta_t[VALUE <span class="sc">&gt;</span> <span class="dv">0</span>]</span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a><span class="do">## create helper table: a regular hourly sequence with VALUE = 0</span></span>
+<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a><span class="do">## this represents the "background" — all hours in the study period</span></span>
+<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">VALUE =</span> <span class="dv">0</span>,</span>
+<span id="cb65-7"><a href="#cb65-7" aria-hidden="true" tabindex="-1"></a>                 <span class="at">DATETIME =</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="fu">as.POSIXct</span>(<span class="at">x =</span> <span class="st">"2018-01-01 00:00:00"</span>),</span>
+<span id="cb65-8"><a href="#cb65-8" aria-hidden="true" tabindex="-1"></a>                                <span class="at">to =</span> <span class="fu">as.POSIXct</span>(<span class="at">x =</span> <span class="st">"2026-01-01 00:00:00"</span>),</span>
+<span id="cb65-9"><a href="#cb65-9" aria-hidden="true" tabindex="-1"></a>                                <span class="at">by =</span> <span class="st">"hour"</span>))</span>
+<span id="cb65-10"><a href="#cb65-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-11"><a href="#cb65-11" aria-hidden="true" tabindex="-1"></a><span class="do">## merge: left join of hourly sequence onto observed non-zero data</span></span>
+<span id="cb65-12"><a href="#cb65-12" aria-hidden="true" tabindex="-1"></a><span class="do">## rows in dt that have no matching observation keep VALUE = 0</span></span>
+<span id="cb65-13"><a href="#cb65-13" aria-hidden="true" tabindex="-1"></a>merged <span class="ot">&lt;-</span> <span class="fu">merge</span>(<span class="at">x =</span> dt,</span>
+<span id="cb65-14"><a href="#cb65-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">y =</span> nz[, .(DATETIME, VALUE, STATION)],</span>
+<span id="cb65-15"><a href="#cb65-15" aria-hidden="true" tabindex="-1"></a>                <span class="at">by =</span> <span class="st">"DATETIME"</span>,</span>
+<span id="cb65-16"><a href="#cb65-16" aria-hidden="true" tabindex="-1"></a>                <span class="at">all.x =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb65-17"><a href="#cb65-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-18"><a href="#cb65-18" aria-hidden="true" tabindex="-1"></a><span class="do">## inspect merged result</span></span>
+<span id="cb65-19"><a href="#cb65-19" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="at">x =</span> merged)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Ключ: «DATETIME»
+              DATETIME VALUE.x VALUE.y             STATION
+                &lt;POSc&gt;   &lt;num&gt;   &lt;num&gt;              &lt;fctr&gt;
+1: 2018-01-01 00:00:00       0      NA                &lt;NA&gt;
+2: 2018-01-01 01:00:00       0      NA                &lt;NA&gt;
+3: 2018-01-01 02:00:00       0      NA                &lt;NA&gt;
+4: 2018-01-01 03:00:00       0      NA                &lt;NA&gt;
+5: 2018-01-01 04:00:00       0      NA                &lt;NA&gt;
+6: 2018-01-01 05:00:00       0     0.1 0-203-0-10601011001</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(<span class="at">x =</span> merged)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2716679</code></pre>
+</div>
+</div>
+<p>The helper table <code>dt</code> contains a complete hourly sequence from 2018 to 2026 <strong>70129 hours</strong> in total. Each row has <code>VALUE = 0</code>, representing “no recorded precipitation” as a baseline for every hour in the study period.</p>
+<p>After the left join, <code>merged</code> has <strong>2716679 rows</strong>, which is larger than <code>dt</code> because multiple stations can match the same hour.</p>
+<p><strong>What the helper table represents</strong>: a complete time grid covering the full study period. Every hour gets a baseline <code>VALUE = 0</code>.</p>
+<p><strong>How the merge works</strong>: <code>nz</code>, aka non-zero observations, is joined onto <code>dt</code> using <code>DATETIME</code> as the key. Hours with a real observation get the actual value filled in via <code>VALUE.y</code>. Hours with no matching observation keep <code>VALUE = 0</code> from <code>dt</code> and show <code>NA</code> in <code>VALUE.y</code> and <code>STATION</code>. All hours in the grid are preserved because we use <code>all.x = TRUE</code>.</p>
+<p><strong>Why this is useful</strong>: it produces a gapless time series, making it easy to detect missing observation periods or compute time-averaged means without gaps distorting the results.</p>
+</section>
+<section id="reshape-task" class="level2">
+<h2 class="anchored" data-anchor-id="reshape-task">11. Reshape task</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="do">## create a small station-year summary for reshaping</span></span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>st_yr <span class="ot">&lt;-</span> dta_t[VALUE <span class="sc">&gt;</span> <span class="dv">0</span>,</span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a>               .(<span class="at">mean_val =</span> <span class="fu">mean</span>(<span class="at">x =</span> VALUE, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)),</span>
+<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a>               by <span class="ot">=</span> .(STATION, yr)]</span>
+<span id="cb69-5"><a href="#cb69-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-6"><a href="#cb69-6" aria-hidden="true" tabindex="-1"></a><span class="do">## reshape to wide: one row per station, one column per year</span></span>
+<span id="cb69-7"><a href="#cb69-7" aria-hidden="true" tabindex="-1"></a>wide <span class="ot">&lt;-</span> <span class="fu">dcast</span>(<span class="at">data =</span> st_yr,</span>
+<span id="cb69-8"><a href="#cb69-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">formula =</span> STATION <span class="sc">~</span> yr,</span>
+<span id="cb69-9"><a href="#cb69-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">value.var =</span> <span class="st">"mean_val"</span>)</span>
+<span id="cb69-10"><a href="#cb69-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-11"><a href="#cb69-11" aria-hidden="true" tabindex="-1"></a><span class="do">## inspect wide format</span></span>
+<span id="cb69-12"><a href="#cb69-12" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="at">x =</span> wide)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Ключ: «STATION»
+           STATION      2018      2019      2020      2021      2022      2023
+            &lt;fctr&gt;     &lt;num&gt;     &lt;num&gt;     &lt;num&gt;     &lt;num&gt;     &lt;num&gt;     &lt;num&gt;
+1: 0-20000-0-11406 0.5942602 0.5506546 0.6403778 0.6659743 0.6203390 0.5467351
+2: 0-20000-0-11414 0.7077720 0.6714876 0.7514725 0.7759714 0.6169875 0.6507380
+3: 0-20000-0-11423 0.5744434 0.5512376 0.6328924 0.6597826 0.7665306 0.6085091
+4: 0-20000-0-11433 0.5941272 0.6945910 0.5887943 0.7733906 0.5645980 0.6087389
+5: 0-20000-0-11438 0.6226331 0.5989884 0.6465672 0.6843792 0.5747875 0.6032459
+6: 0-20000-0-11450 0.6864122 0.6207711 0.6684149 0.7548826 0.7395722 0.5935035
+        2024
+       &lt;num&gt;
+1: 0.7710130
+2: 0.7428716
+3: 0.7375781
+4: 0.6731325
+5: 0.7091892
+6: 0.8709957</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="do">## reshape back to long</span></span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>long <span class="ot">&lt;-</span> <span class="fu">melt</span>(<span class="at">data =</span> wide,</span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">id.vars =</span> <span class="st">"STATION"</span>,</span>
+<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">variable.name =</span> <span class="st">"year"</span>,</span>
+<span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">value.name =</span> <span class="st">"mean_val"</span>)</span>
+<span id="cb71-6"><a href="#cb71-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-7"><a href="#cb71-7" aria-hidden="true" tabindex="-1"></a><span class="do">## inspect long format</span></span>
+<span id="cb71-8"><a href="#cb71-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="at">x =</span> long)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           STATION   year  mean_val
+            &lt;fctr&gt; &lt;fctr&gt;     &lt;num&gt;
+1: 0-20000-0-11406   2018 0.5942602
+2: 0-20000-0-11414   2018 0.7077720
+3: 0-20000-0-11423   2018 0.5744434
+4: 0-20000-0-11433   2018 0.5941272
+5: 0-20000-0-11438   2018 0.6226331
+6: 0-20000-0-11450   2018 0.6864122</code></pre>
+</div>
+</div>
+<p><code>dcast()</code> reshapes the data into wide format — one row per station, one column per year. This makes it easy to compare mean precipitation across years side by side.</p>
+<p>The output shows stable values across 2018–2024 for most stations, with a slight increase visible in 2024.</p>
+<p><code>melt()</code> converts the wide table back to long format, which is better suited for further grouped analysis or plotting.</p>
+</section>
+<section id="final-conclusions" class="level2">
+<h2 class="anchored" data-anchor-id="final-conclusions">12. Final conclusions</h2>
+<p><strong>Main data problems:</strong> - <code>X</code> column was entirely <code>NA</code> — probbaly it was an artifact from data export - 2846 duplicate rows caused by a DST clock change on <code>2018-03-25 01:00:00</code> - 165247 rows with low quality codes (<code>3</code> or <code>4</code>) - 192840 flagged rows across <code>FLAG</code> codes <code>""</code> and <code>"Z"</code></p>
+<p><strong>What was cleaned:</strong> - <code>X</code> column dropped - Exact duplicates removed with <code>unique()</code> - <code>low_quality</code> and <code>suspicious</code> flags added for downstream filtering - <code>DT</code> renamed to <code>DATETIME</code>, <code>yr</code> column added</p>
+<p><strong>Uncertain decisions:</strong> - Low quality rows were flagged but kept — whether to exclude them depends on the analysis - Empty string <code>FLAG == ""</code> rows were kept — unclear if they represent a logging error or valid unflagged observations</p>
+<p><strong>Most suspicious:</strong> - Station <code>0-20000-0-11747</code> had the most flagged rows - 16741 - Station <code>0-203-0-11721</code> had the most extreme single value — 64.0 mm in one hour, over 20 standard deviations above its mean - Since <code>ELEMENT</code> has only one level, all quality concerns are at the station level</p>
+<p><strong>Most useful <code>data.table</code> operations:</strong> - <code>:=</code> for adding and removing columns in-place - <code>by</code> with <code>.N</code> for grouped summaries and duplicate detection - <code>dcast()</code> and <code>melt()</code> for reshaping - <code>merge()</code> with <code>all.x = TRUE</code> for building a gapless time series - <code>setnames()</code> for safe column renaming</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
